@@ -3,6 +3,7 @@ export interface Mappable {
 		lat: number;
 		lng: number;
 	}
+	color: string;
 	markerContent(): string;
 }
 
@@ -25,6 +26,9 @@ export class CostumMap {
 			position: {
 				lat: mappable.location.lat,
 				lng: mappable.location.lng
+			},
+			icon: {
+				url: `http://maps.google.com/mapfiles/ms/icons/${mappable.color}-dot.png`
 			}
 		})
 

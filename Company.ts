@@ -8,6 +8,7 @@ export class Company implements Mappable {
 		lat: number;
 		lng: number;
 	};
+	color: string;
 
 
 	constructor() {
@@ -17,6 +18,7 @@ export class Company implements Mappable {
 			lat: parseFloat(faker.address.latitude()),
 			lng: parseFloat(faker.address.longitude())
 		};
+		this.color = "green";
 	}
 
 	markerContent(): string {

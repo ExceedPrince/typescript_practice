@@ -136888,15 +136888,17 @@ var User =
 /** @class */
 function () {
   function User() {
-    this.name = faker_1.default.name.firstName();
+    this.firstName = faker_1.default.name.firstName();
+    this.lastName = faker_1.default.name.lastName();
     this.location = {
       lat: parseFloat(faker_1.default.address.latitude()),
       lng: parseFloat(faker_1.default.address.longitude())
     };
+    this.color = "orange";
   }
 
   User.prototype.markerContent = function () {
-    return "Username: " + this.name;
+    return "Username: " + this.firstName + " " + this.lastName;
   };
 
   return User;
@@ -136929,6 +136931,7 @@ function () {
       lat: parseFloat(faker_1.default.address.latitude()),
       lng: parseFloat(faker_1.default.address.longitude())
     };
+    this.color = "green";
   }
 
   Company.prototype.markerContent = function () {
@@ -136968,6 +136971,9 @@ function () {
       position: {
         lat: mappable.location.lat,
         lng: mappable.location.lng
+      },
+      icon: {
+        url: "http://maps.google.com/mapfiles/ms/icons/" + mappable.color + "-dot.png"
       }
     });
     marker.addListener('click', function () {
@@ -136996,11 +137002,38 @@ var Company_1 = require("./Company");
 var CustomMap_1 = require("./CustomMap");
 
 function load() {
+  document.getElementById("root").insertAdjacentHTML("afterbegin", "\n\t\t<div id=\"map\"></div>\n\t\t<div id=\"infos\">\n\t\t\t<button id=\"newBtn\">Create new user</button>\n\t\t\t<h1>Infos</h1>\n\t\t</div>\n\t");
   var user = new User_1.User();
   var company = new Company_1.Company();
-  var costumMap = new CustomMap_1.CostumMap("root");
+  var costumMap = new CustomMap_1.CostumMap("map");
   costumMap.addMarker(user);
   costumMap.addMarker(company);
+  var text;
+
+  function addText(firstName, lastName, companyName) {
+    function getAge(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    text = document.createElement("p");
+    text.innerHTML = "Hi! My name is <b>" + firstName + " " + lastName + "</b>, I'm " + getAge(18, 65) + " years old and I work at the <b>" + companyName + "</b> company. <br> \n\tCurrently I'm on a vacation somewhere in the world, as you can see on the map, such as the location of my workplace!"; // Insert text
+
+    document.getElementById("infos").appendChild(text);
+  }
+
+  addText(user.firstName, user.lastName, company.companyName);
+
+  function createNew() {
+    user = new User_1.User();
+    company = new Company_1.Company();
+    costumMap = new CustomMap_1.CostumMap("map");
+    costumMap.addMarker(user);
+    costumMap.addMarker(company);
+    document.querySelector("p").remove();
+    addText(user.firstName, user.lastName, company.companyName);
+  }
+
+  document.getElementById("newBtn").addEventListener("click", createNew);
 }
 
 window.addEventListener('load', load);
@@ -137032,7 +137065,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54404" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63189" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
